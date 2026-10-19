@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rika AI - Trợ Lý Thông Minh</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Thanh Menu / Header trang web -->
+    <header class="app-header">
+        <div class="logo">✨ Rika AI</div>
+        <button class="new-chat-btn" id="newChatBtn">+ Cuộc trò chuyện mới</button>
+    </header>
+
+    <!-- Khung trò chuyện chính -->
+    <main class="chat-wrapper">
+        <div class="chat-messages" id="chatBox">
+            <!-- Tin nhắn chào mừng ban đầu -->
+            <div class="welcome-box" id="welcomeBox">
+                <h1>Xin chào! Mình là Rika 👋</h1>
+                <p>Trợ lý AI cá nhân của bạn. Hôm nay mình có thể giúp gì cho bạn?</p>
+            </div>
+        </div>
+
+        <!-- Thanh nhập liệu ở đáy trang -->
+        <div class="input-container">
+            <div class="input-box">
+                <input type="text" id="userInput" placeholder="Hỏi Rika bất cứ điều gì..." autocomplete="off">
+                <button id="sendBtn">
+                    <span>➔</span>
+                </button>
+            </div>
+            <p class="disclaimer">Rika AI có thể đưa ra phản hồi mang tính tham khảo.</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
