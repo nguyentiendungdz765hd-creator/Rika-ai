@@ -3,13 +3,13 @@ const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 const newChatBtn = document.getElementById('newChatBtn');
 
-// ====== DÁN API KEY CỦA BẠN VÀO ĐÂY ======
-const GEMINI_API_KEY = 'AQ.Ab8RN6Jlj9fSAp5l_erPtpZAPBc-jheCXPhHgG3Tv1vp8LQ-Wg';
-// =========================================
+// ====== DÁN API KEY MỚI CỦA BẠN VÀO ĐÂY ======
+const GEMINI_API_KEY = 'AQ.Ab8RN6Ls4H2NdBo51qBh5zXYUcwK_u4dg9rBEDdbeD0R_Fz0eg';
+// ==============================================
 
-// Model 1.5-flash: Siêu tốc, ổn định và ko bị lỗi trên key mới
 const MODEL = 'gemini-1.5-flash'; 
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+// Đã bỏ ?key= trên URL, chuyển sang dùng Header
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 let conversationHistory = [];
 
@@ -36,8 +36,9 @@ async function sendMessage() {
     const text = userInput.value.trim();
     if (!text) return;
 
+    // Kiểm tra sơ bộ
     if (!GEMINI_API_KEY || GEMINI_API_KEY.includes('DÁN_KEY')) {
-        alert('Bạn chưa điền Gemini API key vào script.js!');
+        alert('Bạn chưa điền API key vào script.js!');
         return;
     }
 
@@ -69,19 +70,30 @@ async function sendMessage() {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                // ĐÂY LÀ ĐIỂM QUAN TRỌNG: Truyền key qua Header thay vì URL
+                'x-goog-api-key': GEMINI_API_KEY 
             },
             body: JSON.stringify({
-                contents: contents
+                systemInstruction: {
+                    parts: [{ text: SYSTEM_PROMPT }]
+                },
+                contents: contents,
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 1000,
+                }
             })
         });
 
+        // Lấy dữ liệu JSON trả về
+        const data = await response.json();
+
         if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.error?.message || `Lỗi HTTP ${response.status}`);
+            // In lỗi chi tiết ra Console (F12) để dễ debug
+            console.error("Chi tiết lỗi từ Google:", data);
+            throw new Error(data.error?.message || `Lỗi HTTP ${response.status}`);
         }
 
-        const data = await response.json();
         const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || '(Không có phản hồi)';
 
         aiBubble.textContent = '';
@@ -90,9 +102,15 @@ async function sendMessage() {
         conversationHistory.push({ role: 'assistant', content: reply });
 
     } catch (error) {
-        console.error('Lỗi:', error);
-        if (error.message.includes('Failed to fetch')) {
-            aiBubble.textContent = '⚠️ Lỗi Mạng: Nếu bạn đang xem trên Spck Preview, hãy chuyển sang mở bằng trình duyệt Chrome/Safari. Khi đưa lên GitHub Pages, lỗi này sẽ biến mất.';
+        console.error('Lỗi tổng thể:', error);
+        
+        // Hiển thị lỗi thân thiện
+        if (error.message.includes('API key not valid') || error.message.includes('API_KEY_INVALID')) {
+            aiBubble.textContent = '⚠️ Lỗi: API Key vẫn không hợp lệ. Bạn hãy thử tạo một Key mới trên AI Studio nhé.';
+        } else if (error.message.includes('Failed to fetch')) {
+            aiBubble.textContent = '⚠️ Lỗi Mạng: Trình duyệt đang chặn kết nối. Hãy thử tải lại trang.';
+        } else if (error.message.includes('quota')) {
+            aiBubble.textContent = '⚠️ Lỗi: Đã hết lượt sử dụng miễn phí của Key này.';
         } else {
             aiBubble.textContent = '⚠️ Lỗi: ' + error.message;
         }
@@ -106,7 +124,7 @@ async function sendMessage() {
 function typeWriter(element, text) {
     return new Promise((resolve) => {
         let i = 0;
-        const speed = 10; 
+        const speed = 15; 
         function tick() {
             if (i < text.length) {
                 element.textContent += text.charAt(i);
