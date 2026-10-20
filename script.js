@@ -4,7 +4,7 @@ const sendBtn = document.getElementById('sendBtn');
 const newChatBtn = document.getElementById('newChatBtn');
 
 // ====== DÁN API KEY CỦA BẠN VÀO ĐÂY ======
-const GEMINI_API_KEY = 'AQ.Ab8RN6JpbpQIVKJuH_bajOTAwQO6k9REG2tUMw2BEK__7VmyKg';
+const GEMINI_API_KEY = 'AQ.Ab8RN6Jlj9fSAp5l_erPtpZAPBc-jheCXPhHgG3Tv1vp8LQ-Wg';
 // =========================================
 
 // Model 1.5-flash: Siêu tốc, ổn định và ko bị lỗi trên key mới
