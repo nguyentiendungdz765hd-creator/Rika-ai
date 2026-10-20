@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rika AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">✦ Rika AI</div>
+    <button id="newChatBtn" class="new-chat">＋ Cuộc trò chuyện mới</button>
+    <p class="side-note">Trợ lý AI của bạn</p>
+    <div class="sidebar-bottom">Rika AI · Phiên bản thử nghiệm</div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <button id="menuBtn" class="menu-btn" aria-label="Mở menu">☰</button>
+      <span>Rika AI</span>
+      <span class="status">● Trực tuyến</span>
+    </header>
+
+    <section id="chatBox" class="chat-box">
+      <div id="welcomeBox" class="welcome">
+        <div class="logo">✦</div>
+        <h1>Xin chào! 👋</h1>
+        <p>Mình là Rika AI. Hôm nay mình có thể giúp gì cho bạn?</p>
+        <div class="suggestions">
+          <button class="suggestion">💻 Giúp tôi viết code</button>
+          <button class="suggestion">📚 Giải thích kiến thức</button>
+          <button class="suggestion">💡 Lên ý tưởng mới</button>
+        </div>
+      </div>
+    </section>
+
+    <form id="chatForm" class="input-area">
+      <div class="input-wrap">
+        <textarea id="userInput" rows="1"
+          placeholder="Nhắn tin cho Rika AI..."
+          aria-label="Tin nhắn"></textarea>
+        <button id="sendBtn" type="submit" aria-label="Gửi tin nhắn">➤</button>
+      </div>
+      <p>Rika AI có thể trả lời chưa chính xác. Hãy kiểm tra thông tin quan trọng.</p>
+    </form>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
